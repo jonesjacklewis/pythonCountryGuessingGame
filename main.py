@@ -240,11 +240,11 @@ def save_score(username: str, score: int) -> None:
             (username, score)
         )
 
-def clear_an_amount_of_scores(amount: int) -> None:
-    """Clear an amount of scores.
+def keep_an_amount_of_scores(amount: int) -> None:
+    """Keep an amount of scores.
 
     Args:
-        amount (int): The amount of scores to clear.
+        amount (int): The amount of scores to keep.
     """
 
     with sqlite3.connect(COUNTRY_INFO_DB) as connection:
@@ -305,7 +305,7 @@ def main():
 
     number_of_scores: int = 5
 
-    clear_an_amount_of_scores(number_of_scores)
+    keep_an_amount_of_scores(number_of_scores)
 
     scores: List[UserScore] = get_top_scores(number_of_scores)
 
