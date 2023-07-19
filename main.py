@@ -240,6 +240,28 @@ def save_score(username: str, score: int) -> None:
             (username, score)
         )
 
+def clear_an_amount_of_scores(amount: int) -> None:
+    """Clear an amount of scores.
+
+    Args:
+        amount (int): The amount of scores to clear.
+    """
+
+    with sqlite3.connect(COUNTRY_INFO_DB) as connection:
+        cursor = connection.cursor()
+        cursor.execute(
+            """
+            DELETE FROM country_information
+            WHERE id NOT IN (
+                SELECT id
+                FROM country_information
+                ORDER BY score DESC
+                LIMIT ?
+            )
+            """,
+            (amount,)
+        )
+
 def get_top_scores(amount: int) -> List[UserScore]:
     """Get the top n scores.
 
@@ -281,7 +303,11 @@ def main():
         create_database_file()
         save_score(username, score)
 
-    scores: List[UserScore] = get_top_scores(5)
+    number_of_scores: int = 5
+
+    clear_an_amount_of_scores(number_of_scores)
+
+    scores: List[UserScore] = get_top_scores(number_of_scores)
 
     for score in scores:
         print(score)
