@@ -274,10 +274,12 @@ def main():
     )
 
     score: int = game_loop(names_and_populations)
-    username: str = get_user_name()
 
-    create_database_file()
-    save_score(username, score)
+    if score > 0:
+        username: str = get_user_name()
+
+        create_database_file()
+        save_score(username, score)
 
     scores: List[UserScore] = get_top_scores(5)
 
